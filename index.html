@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>OneMusic | Free Open Source Music Streaming App by OnePersonAI</title>
+  <meta name="title" content="OneMusic | Free Open Source Music Streaming App by OnePersonAI" />
+  <meta name="description" content="OneMusic is a free and open-source music streaming app by OnePersonAI. No ads, no subscriptions, smart autoplay, dark UI, and direct APK download." />
+  <meta name="keywords" content="OneMusic, OnePersonAI, open source music app, Flutter music app, free music streaming app, Android music player, APK download" />
+  <meta name="author" content="Akshat Raj" />
+  <meta name="robots" content="index, follow" />
+  <meta name="language" content="English" />
+  <meta name="theme-color" content="#ff7a18" />
+  <link rel="canonical" href="https://onepersonai.in/" />
+
+  <meta name="google-site-verification" content="PASTE_GOOGLE_VERIFICATION_CODE_HERE" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://onepersonai.in/" />
+  <meta property="og:title" content="OneMusic | Free Open Source Music Streaming App" />
+  <meta property="og:description" content="No ads. No subscriptions. Smart autoplay. Open-source music streaming by OnePersonAI." />
+  <meta property="og:image" content="https://onepersonai.in/assets/logo.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://onepersonai.in/" />
+  <meta name="twitter:title" content="OneMusic | Free Open Source Music Streaming App" />
+  <meta name="twitter:description" content="Modern open-source music streaming app with smart autoplay and premium dark UI." />
+  <meta name="twitter:image" content="https://onepersonai.in/assets/logo.png" />
+
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0a0a10;
+      --bg2: #11111a;
+      --card: rgba(255, 255, 255, 0.04);
+      --card-2: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.10);
+      --text: #f5f5f7;
+      --muted: #b0b0c3;
+      --accent: #ff7a18;
+      --accent-2: #ffb347;
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+      --radius: 24px;
+      --container: 1180px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Poppins", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(255, 122, 24, 0.12), transparent 30%),
+        radial-gradient(circle at right top, rgba(255, 179, 71, 0.10), transparent 25%),
+        linear-gradient(180deg, #09090f 0%, #0f1018 100%);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img, video {
+      display: block;
+      max-width: 100%;
+    }
+
+    .container {
+      width: min(var(--container), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .section {
+      padding: 92px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-title {
+      font-size: clamp(1.9rem, 3vw, 3rem);
+      line-height: 1.1;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 34px;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(10, 10, 16, 0.72);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #111;
+      box-shadow: 0 0 24px rgba(255, 122, 24, 0.35);
+      font-weight: 900;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      border-radius: 14px;
+      cursor: pointer;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border-radius: 16px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #111;
+      box-shadow: 0 18px 40px rgba(255, 122, 24, 0.16);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 46px rgba(255, 122, 24, 0.22);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text);
+      border-color: var(--border);
+      box-shadow: none;
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .btn-small {
+      padding: 10px 16px;
+      border-radius: 14px;
+      font-size: 0.95rem;
+    }
+
+    .hero {
+      padding: 92px 0 76px;
+      position: relative;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,122,24,0.12), transparent 22%),
+        radial-gradient(circle at 80% 15%, rgba(255,179,71,0.12), transparent 22%);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 42px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent-2);
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 18px rgba(255, 122, 24, 0.7);
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 8vw, 5.8rem);
+      line-height: 0.95;
+      margin-bottom: 18px;
+      letter-spacing: -0.04em;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--text);
+      min-height: 34px;
+      margin-bottom: 14px;
+    }
+
+    .cursor {
+      display: inline-block;
+      color: var(--accent-2);
+      animation: blink 0.8s infinite;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    .hero-text {
+      color: var(--muted);
+      max-width: 620px;
+      margin-bottom: 28px;
+      font-size: 1.02rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .hero-meta span {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.03);
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .hero-media {
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+
+    .hero-logo {
+      width: min(380px, 100%);
+      border-radius: 28px;
+      filter: drop-shadow(0 28px 50px rgba(0, 0, 0, 0.35));
+      animation: float 5s ease-in-out infinite;
+    }
+
+    .hero-card {
+      position: absolute;
+      inset: auto auto 10px 8px;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(12, 12, 18, 0.72);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      max-width: 220px;
+    }
+
+    .hero-card strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .hero-card small {
+      color: var(--muted);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .cards {
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 30px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, var(--card), rgba(255,255,255,0.025));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 122, 24, 0.35);
+      background: linear-gradient(180deg, var(--card-2), rgba(255,255,255,0.025));
+    }
+
+    .card h3 {
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      align-items: center;
+    }
+
+    .about-box,
+    .download-box,
+    .community-box {
+      background: linear-gradient(180deg, var(--card), rgba(255,255,255,0.025));
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .about-box p,
+    .download-box p,
+    .community-box p {
+      color: var(--muted);
+      margin-top: 12px;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .badge {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .screenshots {
+      grid-template-columns: repeat(4, 1fr);
+      margin-top: 30px;
+    }
+
+    .shot {
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+      box-shadow: var(--shadow);
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .shot:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 122, 24, 0.35);
+    }
+
+    .shot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .video-box {
+      margin-top: 30px;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      background: #000;
+    }
+
+    .video-box video {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+    }
+
+    .download-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-top: 30px;
+    }
+
+    .link-card {
+      display: grid;
+      place-items: center;
+      min-height: 92px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      font-weight: 700;
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .link-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 122, 24, 0.35);
+    }
+
+    .footer {
+      padding: 26px 0 42px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .menu-panel {
+      display: none;
+    }
+
+    @media (max-width: 1080px) {
+      .hero-grid,
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 62px;
+      }
+
+      .hero-content {
+        order: 2;
+        text-align: center;
+      }
+
+      .hero-text {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-actions,
+      .badges {
+        justify-content: center;
+      }
+
+      .hero-media {
+        order: 1;
+      }
+
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .screenshots {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .link-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-links,
+      .header .btn-small {
+        display: none;
+      }
+
+      .nav-toggle {
+        display: inline-grid;
+        place-items: center;
+      }
+
+      .menu-panel {
+        display: block;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease;
+        border-bottom: 1px solid transparent;
+      }
+
+      .menu-panel.open {
+        max-height: 300px;
+        border-bottom-color: var(--border);
+      }
+
+      .menu-links {
+        padding: 0 0 18px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .menu-links a {
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--border);
+      }
+
+      .cards,
+      .screenshots,
+      .link-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 72px 0;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.8rem, 14vw, 4.2rem);
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .hero-actions,
+      .download-row {
+        flex-direction: column;
+      }
+
+      .hero-card {
+        position: static;
+        margin-top: 18px;
+        max-width: none;
+      }
+
+      .about-box,
+      .download-box,
+      .community-box {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a href="#home" class="brand" aria-label="OneMusic Home">
+        <span class="brand-icon">◎</span>
+        <span>OneMusic</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#features">Features</a>
+        <a href="#screenshots">Screenshots</a>
+        <a href="#video">Video</a>
+        <a href="#download">Download</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <button class="nav-toggle" id="menuBtn" aria-label="Open menu">☰</button>
+
+      <a href="#download" class="btn btn-small">Download APK</a>
+    </div>
+
+    <div class="menu-panel" id="menuPanel">
+      <div class="container menu-links">
+        <a href="#features">Features</a>
+        <a href="#screenshots">Screenshots</a>
+        <a href="#video">Video</a>
+        <a href="#download">Download</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <p class="eyebrow">OnePersonAI presents</p>
+          <h1>OneMusic</h1>
+          <p class="hero-subtitle">
+            <span id="typing-text">Free. Open Source. Built for music lovers.</span><span class="cursor">|</span>
+          </p>
+          <p class="hero-text">
+            A premium open-source music streaming app with smart autoplay, clean dark UI,
+            and direct APK download.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#download" class="btn">Download APK</a>
+            <a href="https://github.com/AkshatRaj00/OneMusic" target="_blank" rel="noopener noreferrer" class="btn btn-outline">View Source</a>
+          </div>
+
+          <div class="hero-meta" aria-label="Key highlights">
+            <span>No Ads</span>
+            <span>No Login</span>
+            <span>Open Source</span>
+            <span>Smart Autoplay</span>
+          </div>
+        </div>
+
+        <div class="hero-media">
+          <img src="assets/logo.png" alt="OneMusic logo" class="hero-logo" />
+          <div class="hero-card">
+            <strong>OneMusic</strong>
+            <small>First product under OnePersonAI</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container two-col">
+        <div class="about-box">
+          <h2 class="section-title" style="text-align:left;margin-bottom:12px;">About OneMusic</h2>
+          <p>
+            OneMusic is the first product under OnePersonAI. It is designed to give users a
+            fast, modern, and open music experience with a premium look and simple workflow.
+          </p>
+          <div class="badges">
+            <span class="badge">Open Source</span>
+            <span class="badge">Flutter App</span>
+            <span class="badge">Music Streaming</span>
+            <span class="badge">Android APK</span>
+          </div>
+        </div>
+
+        <div class="download-box">
+          <h2 class="section-title" style="text-align:left;margin-bottom:12px;">Why it matters</h2>
+          <p>
+            No ads, no subscription walls, no account friction. Just open the app and start listening.
+            Built with a clean UI and a strong focus on music lovers.
+          </p>
+          <div class="download-row">
+            <a href="#download" class="btn">Get APK</a>
+            <a href="https://onepersonai.in/" target="_blank" rel="noopener noreferrer" class="btn btn-outline">OnePersonAI</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <div class="container">
+        <h2 class="section-title">Features</h2>
+        <p class="section-subtitle">
+          Built to feel modern, fast, and effortless from the first tap.
+        </p>
+
+        <div class="grid cards">
+          <article class="card">
+            <h3>Smart Queue</h3>
+            <p>Queue adapts to your listening mood and genre to keep the flow natural.</p>
+          </article>
+
+          <article class="card">
+            <h3>Infinite Autoplay</h3>
+            <p>The same vibe keeps playing without stopping the experience.</p>
+          </article>
+
+          <article class="card">
+            <h3>No Login Required</h3>
+            <p>Open the app and start listening instantly without signup.</p>
+          </article>
+
+          <article class="card">
+            <h3>Dark Premium UI</h3>
+            <p>A modern interface crafted for a music-first experience.</p>
+          </article>
+
+          <article class="card">
+            <h3>Liked Songs</h3>
+            <p>Save your favorite tracks for quick access later.</p>
+          </article>
+
+          <article class="card">
+            <h3>Recently Played</h3>
+            <p>Return to your recent listening history in one tap.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="screenshots" class="section">
+      <div class="container">
+        <h2 class="section-title">Screenshots</h2>
+        <p class="section-subtitle">
+          A quick look at the product UI.
+        </p>
+
+        <div class="grid screenshots">
+          <div class="shot"><img src="assets/screenshot-1.png" alt="OneMusic screenshot 1" /></div>
+          <div class="shot"><img src="assets/screenshot-2.png" alt="OneMusic screenshot 2" /></div>
+          <div class="shot"><img src="assets/screenshot-3.png" alt="OneMusic screenshot 3" /></div>
+          <div class="shot"><img src="assets/screenshot-4.png" alt="OneMusic screenshot 4" /></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="video" class="section">
+      <div class="container">
+        <h2 class="section-title">Promo Video</h2>
+        <p class="section-subtitle">
+          A short product video helps the website feel more professional and trust-worthy.
+        </p>
+
+        <div class="video-box">
+          <video controls muted playsinline poster="assets/logo.png">
+            <source src="assets/promo.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section id="download" class="section">
+      <div class="container">
+        <div class="download-box">
+          <h2 class="section-title" style="margin-bottom:12px;">Download OneMusic</h2>
+          <p class="section-subtitle" style="margin-bottom:0;">
+            Get the latest APK or check the GitHub release page.
+          </p>
+
+          <div class="download-row" style="justify-content:center;margin-top:22px;">
+            <a href="assets/OneMusic.apk" class="btn" download>Download APK</a>
+            <a href="https://github.com/AkshatRaj00/OneMusic/releases/tag/main" target="_blank" rel="noopener noreferrer" class="btn btn-outline">GitHub Release</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="community-box">
+          <h2 class="section-title" style="margin-bottom:12px;">Join the Community</h2>
+          <p class="section-subtitle" style="margin-bottom:0;">
+            Suggest features, report bugs, and connect with users through Discord.
+          </p>
+
+          <div class="download-row" style="justify-content:center;margin-top:22px;">
+            <a href="https://discord.gg/sfXpprH5" target="_blank" rel="noopener noreferrer" class="btn">Join Discord</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="container">
+        <h2 class="section-title">Connect</h2>
+        <p class="section-subtitle">
+          Find OneMusic and OnePersonAI across the web.
+        </p>
+
+        <div class="grid link-grid">
+          <a href="https://onepersonai.in/" target="_blank" rel="noopener noreferrer" class="link-card">OnePersonAI</a>
+          <a href="https://github.com/AkshatRaj00" target="_blank" rel="noopener noreferrer" class="link-card">GitHub</a>
+          <a href="https://www.linkedin.com/in/akshatraj00/" target="_blank" rel="noopener noreferrer" class="link-card">LinkedIn</a>
+          <a href="https://x.com/AkshatRaj00_" target="_blank" rel="noopener noreferrer" class="link-card">X</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 OnePersonAI • OneMusic • Open Source • Built with Flutter</p>
+    </div>
+  </footer>
+
+  <script>
+    const phrases = [
+      "Free. Open Source. Built for music lovers.",
+      "No ads. No subscriptions. No limits.",
+      "Smart autoplay. Premium dark UI.",
+      "Powered by OnePersonAI."
+    ];
+
+    const typingText = document.getElementById("typing-text");
+    let wordIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+
+    function typeLoop() {
+      const current = phrases[wordIndex];
+
+      if (!deleting) {
+        charIndex++;
+        typingText.textContent = current.substring(0, charIndex);
+
+        if (charIndex === current.length) {
+          deleting = true;
+          setTimeout(typeLoop, 1300);
+          return;
+        }
+      } else {
+        charIndex--;
+        typingText.textContent = current.substring(0, charIndex);
+
+        if (charIndex === 0) {
+          deleting = false;
+          wordIndex = (wordIndex + 1) % phrases.length;
+        }
+      }
+
+      setTimeout(typeLoop, deleting ? 35 : 60);
+    }
+
+    typeLoop();
+
+    const menuBtn = document.getElementById("menuBtn");
+    const menuPanel = document.getElementById("menuPanel");
+
+    if (menuBtn && menuPanel) {
+      menuBtn.addEventListener("click", () => {
+        menuPanel.classList.toggle("open");
+      });
+
+      menuPanel.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+          menuPanel.classList.remove("open");
+        });
+      });
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener("click", function (e) {
+        const targetId = this.getAttribute("href");
+        if (targetId.length > 1) {
+          const target = document.querySelector(targetId);
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }
+      });
+    });
+
+    const revealTargets = document.querySelectorAll(".card, .shot, .link-card, .about-box, .download-box, .community-box, .video-box, .hero-logo, .hero-card");
+
+    revealTargets.forEach(el => {
+      el.style.opacity = "0";
+      el.style.transform = "translateY(24px)";
+      el.style.transition = "opacity 0.7s ease, transform 0.7s ease";
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = "1";
+          entry.target.style.transform = "translateY(0)";
+        }
+      });
+    }, { threshold: 0.15 });
+
+    revealTargets.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
