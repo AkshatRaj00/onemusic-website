@@ -21,7 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /**
    * Handles the typing/deleting animation loop for the hero text.
-   * Cycles through phrases with a typewriter effect.
+   * Cycles through phrases with a typewriter effect, alternating between
+   * typing and deleting states with configurable delays.
+   *
+   * @param {Object} [options] - Animation timing options
+   * @param {number} [options.typingDelay=55] - Delay between typing characters (ms)
+   * @param {number} [options.deletingDelay=35] - Delay between deleting characters (ms)
+   * @param {number} [options.pauseDelay=1200] - Pause before deleting (ms)
    * @returns {void}
    */
   function typeLoop() {
@@ -89,8 +95,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /**
-   * Creates and animates a floating particle element.
-   * Particles are randomly sized, positioned, and animated upward.
+   * Creates and animates a floating particle element with random properties.
+   * Particles are:
+   * - Randomly sized between 3-8px
+   * - Randomly positioned horizontally
+   * - Animated upward with random duration (6-11s)
+   * - Automatically removed after animation completes
+   *
    * @returns {void}
    */
   function spawnParticle() {
