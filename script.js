@@ -50,8 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } = options;
 
     if (!typingText) {
-      console.error("typingText element not found");
-      return;
+      throw new Error("typingText element not found");
     }
 
     const current = phrases[phraseIndex];
