@@ -5,34 +5,59 @@ document.addEventListener("DOMContentLoaded", () => {
   const typingText = document.getElementById("typing-text");
 
   // --- Typing effect ---
-  /** @type {string[]} */
-  const phrases = [
+  /** @constant {readonly string[]} */
+  const phrases = Object.freeze([
     "Free. Open Source. Built for music lovers.",
     "No ads. No subscription. No limits.",
     "Smart autoplay. Clean UI. Instant play."
-  ];
+  ]);
 
-  /** @type {number} */
+  /** @type {number} Current phrase index */
   let phraseIndex = 0;
-  /** @type {number} */
+  /** @type {number} Current character index */
   let charIndex = 0;
-  /** @type {boolean} */
+  /** @type {boolean} Whether in deleting state */
   let deleting = false;
+
+  /**
+   * @typedef {Object} TypeLoopOptions
+   * @property {number} [typingDelay=55] - Delay between typing characters (ms)
+   * @property {number} [deletingDelay=35] - Delay between deleting characters (ms)
+   * @property {number} [pauseDelay=1200] - Pause before deleting (ms)
+   */
 
   /**
    * Handles the typing/deleting animation loop for the hero text.
    * Cycles through phrases with a typewriter effect, alternating between
    * typing and deleting states with configurable delays.
    *
-   * @param {Object} [options] - Animation timing options
-   * @param {number} [options.typingDelay=55] - Delay between typing characters (ms)
-   * @param {number} [options.deletingDelay=35] - Delay between deleting characters (ms)
-   * @param {number} [options.pauseDelay=1200] - Pause before deleting (ms)
+   * @param {TypeLoopOptions} [options] - Animation timing options
    * @returns {void}
+   * @throws {Error} If typingText element is not found
+   * @example
+   * // Default usage
+   * typeLoop();
+   *
+   * // Custom timing
+   * typeLoop({ typingDelay: 60, deletingDelay: 40, pauseDelay: 1500 });
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout
    */
-  function typeLoop() {
+  function typeLoop(options = {}) {
+    const {
+      typingDelay = 55,
+      deletingDelay = 35,
+      pauseDelay = 1200
+    } = options;
+
+    if (!typingText) {
+      console.error("typingText element not found");
+      return;
+    }
+
     const current = phrases[phraseIndex];
-    if (!typingText) return;
+    if (charIndex < 0 || charIndex > current.length) {
+      charIndex = deleting ? current.length : 0;
+    }
 
     if (!deleting) {
       charIndex++;
@@ -40,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (charIndex === current.length) {
         deleting = true;
-        setTimeout(typeLoop, 1200);
+        setTimeout(typeLoop, pauseDelay, options);
         return;
       }
     } else {
@@ -53,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    setTimeout(typeLoop, deleting ? 35 : 55);
+    setTimeout(typeLoop, deleting ? deletingDelay : typingDelay, options);
   }
 
   typeLoop();
@@ -103,14 +128,23 @@ document.addEventListener("DOMContentLoaded", () => {
    * - Automatically removed after animation completes
    *
    * @returns {void}
+   * @example
+   * // Spawn a single particle
+   * spawnParticle();
+   *
+   * // Spawn particles continuously
+   * setInterval(spawnParticle, 300);
    */
   function spawnParticle() {
     /** @type {HTMLDivElement} */
     const particle = document.createElement("div");
     particle.className = "particle";
 
+    /** @constant {number} Random size between 3-8px */
     const size = Math.random() * 5 + 3;
+    /** @constant {number} Random horizontal position */
     const left = Math.random() * window.innerWidth;
+    /** @constant {number} Random duration between 6-11s */
     const duration = Math.random() * 5 + 6;
 
     particle.style.width = `${size}px`;
@@ -121,7 +155,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.body.appendChild(particle);
 
-    setTimeout(() => particle.remove(), duration * 1000);
+    setTimeout(() => {
+      particle.remove();
+    }, duration * 1000);
   }
 
   setInterval(spawnParticle, 300);
