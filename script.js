@@ -5,35 +5,44 @@ document.addEventListener("DOMContentLoaded", () => {
   const typingText = document.getElementById("typing-text");
 
   // --- Typing effect ---
-  /** @constant {readonly string[]} */
+  /**
+   * Immutable list of phrases cycled by the typewriter effect.
+   * @constant {readonly string[]}
+   */
   const phrases = Object.freeze([
     "Free. Open Source. Built for music lovers.",
     "No ads. No subscription. No limits.",
     "Smart autoplay. Clean UI. Instant play."
   ]);
 
-  /** @type {number} Current phrase index */
+  /** @type {number} Current phrase index (0..phrases.length-1) */
   let phraseIndex = 0;
-  /** @type {number} Current character index */
+  /** @type {number} Current character index within the active phrase */
   let charIndex = 0;
-  /** @type {boolean} Whether in deleting state */
+  /** @type {boolean} Whether the loop is currently in the deleting state */
   let deleting = false;
 
   /**
+   * Configuration object for {@link typeLoop}.
+   * All properties are optional; sensible defaults are applied when omitted.
+   *
    * @typedef {Object} TypeLoopOptions
-   * @property {number} [typingDelay=55] - Delay between typing characters (ms)
-   * @property {number} [deletingDelay=35] - Delay between deleting characters (ms)
-   * @property {number} [pauseDelay=1200] - Pause before deleting (ms)
+   * @property {number} [typingDelay=55]   Delay between typing characters, in milliseconds.
+   * @property {number} [deletingDelay=35] Delay between deleting characters, in milliseconds.
+   * @property {number} [pauseDelay=1200]  Pause after a phrase is fully typed, before deletion begins, in milliseconds.
    */
 
   /**
-   * Handles the typing/deleting animation loop for the hero text.
-   * Cycles through phrases with a typewriter effect, alternating between
-   * typing and deleting states with configurable delays.
+   * Drives the typing/deleting animation loop for the hero text.
    *
-   * @param {TypeLoopOptions} [options] - Animation timing options
+   * Cycles through {@link phrases} with a typewriter effect, alternating between
+   * typing and deleting states with configurable delays. The function schedules
+   * itself recursively via `setTimeout`, so it must be invoked once to start
+   * and will continue indefinitely until the page unloads.
+   *
+   * @param {TypeLoopOptions} [options={}] - Animation timing options.
    * @returns {void}
-   * @throws {Error} If typingText element is not found
+   * @throws {Error} If the `#typing-text` element is not found in the DOM.
    * @example
    * // Default usage
    * typeLoop();
@@ -119,12 +128,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /**
-   * Creates and animates a floating particle element with random properties.
-   * Particles are:
-   * - Randomly sized between 3-8px
-   * - Randomly positioned horizontally
-   * - Animated upward with random duration (6-11s)
-   * - Automatically removed after animation completes
+   * Creates and animates a single floating particle element with randomized
+   * visual properties, then removes it from the DOM once its animation
+   * completes.
+   *
+   * Particle characteristics:
+   * - Size: random between 3–8 px (square)
+   * - Horizontal position: random across the viewport width
+   * - Vertical start: 20 px below the viewport bottom
+   * - Animation duration: random between 6–11 s
+   * - Cleanup: removed from the DOM after `duration * 1000` ms
    *
    * @returns {void}
    * @example
@@ -139,11 +152,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const particle = document.createElement("div");
     particle.className = "particle";
 
-    /** @constant {number} Random size between 3-8px */
+    /** @type {number} Random size between 3–8 px */
     const size = Math.random() * 5 + 3;
-    /** @constant {number} Random horizontal position */
+    /** @type {number} Random horizontal position in px */
     const left = Math.random() * window.innerWidth;
-    /** @constant {number} Random duration between 6-11s */
+    /** @type {number} Random animation duration between 6–11 s */
     const duration = Math.random() * 5 + 6;
 
     particle.style.width = `${size}px`;
