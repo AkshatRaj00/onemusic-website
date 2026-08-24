@@ -1,18 +1,29 @@
 document.addEventListener("DOMContentLoaded", () => {
+  /** @type {HTMLElement | null} */
   const header = document.querySelector(".header");
+  /** @type {HTMLElement | null} */
   const typingText = document.getElementById("typing-text");
 
   // --- Typing effect ---
+  /** @type {string[]} */
   const phrases = [
     "Free. Open Source. Built for music lovers.",
     "No ads. No subscription. No limits.",
     "Smart autoplay. Clean UI. Instant play."
   ];
 
+  /** @type {number} */
   let phraseIndex = 0;
+  /** @type {number} */
   let charIndex = 0;
+  /** @type {boolean} */
   let deleting = false;
 
+  /**
+   * Handles the typing/deleting animation loop for the hero text.
+   * Cycles through phrases with a typewriter effect.
+   * @returns {void}
+   */
   function typeLoop() {
     const current = phrases[phraseIndex];
     if (!typingText) return;
@@ -45,16 +56,19 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener("click", function (e) {
       e.preventDefault();
+      /** @type {HTMLElement | null} */
       const target = document.querySelector(this.getAttribute("href"));
       if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
 
   // --- Scroll reveal ---
+  /** @type {NodeListOf<Element>} */
   const revealItems = document.querySelectorAll("section, .card, .contact-card, .screenshots img, .video-box, .hero-logo");
 
   revealItems.forEach((el) => el.classList.add("reveal"));
 
+  /** @type {IntersectionObserver} */
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -68,14 +82,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- Sticky glass nav on scroll ---
   window.addEventListener("scroll", () => {
     if (window.scrollY > 20) {
-      header.classList.add("glass-nav");
+      header?.classList.add("glass-nav");
     } else {
-      header.classList.remove("glass-nav");
+      header?.classList.remove("glass-nav");
     }
   });
 
-  // --- Floating particles ---
+  /**
+   * Creates and animates a floating particle element.
+   * Particles are randomly sized, positioned, and animated upward.
+   * @returns {void}
+   */
   function spawnParticle() {
+    /** @type {HTMLDivElement} */
     const particle = document.createElement("div");
     particle.className = "particle";
 
@@ -97,6 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(spawnParticle, 300);
 
   // --- Magnetic hover for buttons and cards ---
+  /** @type {NodeListOf<Element>} */
   const hoverTargets = document.querySelectorAll(".btn, .card, .contact-card");
 
   hoverTargets.forEach((el) => {
@@ -114,6 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // --- Mouse glow ---
+  /** @type {HTMLDivElement} */
   const glow = document.createElement("div");
   glow.style.position = "fixed";
   glow.style.width = "320px";
