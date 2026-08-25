@@ -1,3 +1,4 @@
+// script.js
 document.addEventListener("DOMContentLoaded", () => {
   /** @type {HTMLElement | null} */
   const header = document.querySelector(".header");
@@ -49,14 +50,13 @@ document.addEventListener("DOMContentLoaded", () => {
    *
    * // Custom timing
    * typeLoop({ typingDelay: 60, deletingDelay: 40, pauseDelay: 1500 });
-   * @see https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout
    */
-  function typeLoop(options = {}) {
+  function typeLoop(options = /** @type {TypeLoopOptions} */ ({})) {
     const {
       typingDelay = 55,
       deletingDelay = 35,
       pauseDelay = 1200
-    } = options;
+    } = /** @type {TypeLoopOptions} */ (options);
 
     if (!typingText) {
       throw new Error("typingText element not found");
@@ -97,6 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(typeLoop, deleting ? deletingDelay : typingDelay, options);
   }
 
+  // Start the typing animation with default options.
   typeLoop();
 
   // --- Smooth anchor scroll ---
@@ -180,6 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, duration * 1000);
   }
 
+  // Continuously spawn particles.
   setInterval(spawnParticle, 300);
 
   // --- Magnetic hover for buttons and cards ---
