@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
    *
    * @param {TypeLoopOptions} [options={}] - Animation timing options.
    * @returns {void}
-   * @throws {Error} If the `#typing-text` element is not found in the DOM or if phraseIndex is out of bounds.
+   * @throws {Error} If the `#typing-text` element is not found in the DOM or if phrases array is empty.
    * @example
    * // Default usage
    * typeLoop();
@@ -60,6 +60,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!typingText) {
       throw new Error("typingText element not found");
+    }
+
+    if (phrases.length === 0) {
+      throw new Error("phrases array cannot be empty");
     }
 
     const current = phrases[phraseIndex];
